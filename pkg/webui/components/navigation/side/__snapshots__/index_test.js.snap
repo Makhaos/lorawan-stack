@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SideNavigation is flat should match snapshot 1`] = `
+exports[`<SideNavigation /> when it is flat matches snapshot 1`] = `
 <nav
   className="navigation"
 >
@@ -105,7 +105,7 @@ exports[`SideNavigation is flat should match snapshot 1`] = `
 </nav>
 `;
 
-exports[`SideNavigation is nested should match snapshot 1`] = `
+exports[`<SideNavigation /> when it is nested matches snapshot 1`] = `
 <nav
   className="navigation"
 >
