@@ -758,6 +758,7 @@ Code coverage can be used to verify that tests invoke code for handling edge cas
 To generate code coverage report run:
 
 - Global text summary.
+<!-- TODO: Move to mage targets. -->
 ```bash
   npx nyc report --reporter=text-summary
 ```
