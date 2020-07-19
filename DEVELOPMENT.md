@@ -728,13 +728,6 @@ $ tools/bin/mage go:test js:test jsSDK:test
 
 We use [Cypress](https://cypress.io) for running frontend-based end-to-end tests. The tests specifications are located at `/cypress/integration`.
 
-
-To run end-to-end tests, observe the following mage target:
-
-```bash
-$ tools/bin/mage endToEnd:run
-```
-
 #### Running frontend end-to-end tests locally
 
 Make sure to build the frontend assets and run the stack before executing end-to-end tests.
