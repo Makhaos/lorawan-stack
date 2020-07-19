@@ -40,6 +40,7 @@ const applicationCreate = defineSmokeTest('should be able to create application'
     .should('contain', 'You have successfully registered and can login now')
 
   // Login
+  // TODO: https://github.com/TheThingsNetwork/lorawan-stack/issues/2923
   cy.visit(Cypress.config('consoleRootPath'))
   cy.findByLabelText('User ID').type(user.user_id)
   cy.findByLabelText('Password').type(`${user.password}`)
