@@ -9,17 +9,23 @@ This section provides guidelines for configuring MAC settings for end devices fr
 
 {{< cli-only >}}
 
-MAC settings on {{% tts %}} are configurable per end device.
+### MAC Settings and MAC State
 
-Updates to the `mac-state` have an effect during the current session, and are lost on reset.
+`mac-settings` on {{% tts %}} are configurable per end device. To configure persistent MAC settings, make changes to `mac-settings.desired_<parameter>`. Updates to `mac-settings.desired_<parameter>` take effect on device creation, after OTAA join or ABP FCnt reset, ResetInd, or after MAC state reset.
 
-Updates to `mac-settings` take effect after device creation or after MAC state reset (e.g. after OTAA join or ABP FCnt reset, or ResetInd MAC command)
+`mac-state` can be used to test MAC settings immediately. To update settings during the current session, make changes to the `mac-state.desired_parameters.<parameter>`. Updates to the `mac-state.desired_parameters.<parameter>` are lost on reset.
+
+The expected procedure for testing and updating settings is:
+
+1. Modify `mac-state.desired_parameters.<parameter>` to see changes in the current session
+2. Test that everything works as expected
+3. Modify `mac-settings.desired_<parameter>` to make the change permanent
 
 If no settings are provided on device creation or unset, defaults are taken from [Network Server Configuration]({{< ref src="/reference/configuration/network-server" >}}).
 
 ### Available MAC settings
 
-Run the following command to get a list of all available MAC settings:
+Run the following command to get a list of all available MAC settings and available parameter values:
 
 ```bash
 $ ttn-lw-cli end-devices update --help
@@ -27,36 +33,65 @@ $ ttn-lw-cli end-devices update --help
 
 You can also refer to the [End Device API Reference page]({{< ref "reference/api/end_device#message:MACSettings" >}}) for documentation on the available MAC settings and MAC state parameters.
 
-### Setting Duty Cycle
+### Class Specific Settings
 
-To change the duty cycle, set the `max-duty-cycle` parameter. For example, to set the duty cycle to 0.098%, use the following command:
+Settings that are useful based on device class are:
+
+All devices:
+- `mac-settings.factory-preset-frequencies`
+
+Class A:
+- `mac-settings.desired-rx1-delay`
+- `mac-settings.desired-rx1-data-rate-offset`
+- `mac-settings.desired-rx2-data-rate-index`
+- `mac-settings.desired-rx2-frequency`
+- `mac-settings.supports-32-bit-f-cnt`
+- `mac-settings.use-adr`
+
+Class A ABP:
+- `mac-settings.resets-f-cnt`
+
+Class B:
+- `mac-settings.class-b-timeout`
+- `mac-settings.ping-slot-periodicity`
+- `mac-settings.desired-ping-slot-data-rate-index`
+- `mac-settings.desired-ping-slot-frequency`
+
+Class C:
+- `mac-settings.class-c-timeout`
+
+Some additional examples are included below. All settings are available at the [End Device API Reference page]({{< ref "reference/api/end_device#message:MACSettings" >}}) and can be viewed using the `ttn-lw-cli end-devices update --help` command.
+
+### Set Duty Cycle
+
+To change the duty cycle, set the `desired-max-duty-cycle` parameter. For example, to set the duty cycle to 0.098%, use the following command:
 
 ```bash
-$ ttn-lw-cli end-devices update "app-id" "device-id" --mac-settings.max-duty-cycle DUTY_CYCLE_1024
+$ ttn-lw-cli end-devices update <app-id> <device-id> --mac-settings.desired-max-duty-cycle DUTY_CYCLE_1024
 ```
 
->Note: See the [End Device API Reference]({{< ref "reference/api/end_device#message:MACSettings" >}}) for available fields and definitions of constants. DUTY_CYCLE_1024 represents 1/1024 ≈ 0.98%.
+>Note: See the [End Device API Reference]({{< ref "reference/api/end_device#message:MACSettings" >}}) for available fields and definitions of constants. DUTY_CYCLE_1024 represents 1/1024 ≈ 0.098%.
 
-### Setting Uplink and Downlink Dwell Time
+### Enable ADR
 
-To enable uplink and downlink dwell time, set the `uplink-dwell-time` or `downlink-dwell-time` parameters of `mac-state`. For example, to enable downlink dwell time in the current session, use the command:
+To enable ADR, set the `mac-settings.use-adr` parameter
 
 ```bash
-$ ttn-lw-cli end-devices update "app-id" "device-id" --mac-state.current-parameters.downlink_dwell_time true 
+$ ttn-lw-cli end-devices update <app-id> <device-id> --mac-settings.use-adr true 
 ```
 
-### Setting RX1 Delay
+### Set RX1 Delay
 
-The RX1 delay of end devices is set to 1 second by default. For some end devices, this may lead to downlink messages not being scheduled in time. Therefore, it is recommended that the RX1 delay be increased to 5 seconds:
+The RX1 delay of end devices is set to 5 second by default. To change it, set the `desired-rx1-delay` parameter:
 
 ```bash
-$ ttn-lw-cli end-devices update "app-id" "device-id" --mac-settings.rx1-delay RX_DELAY_5
+$ ttn-lw-cli end-devices update <app-id> <device-id> --mac-settings.desired-rx1-delay RX_DELAY_5
 ```
 
-### Unsetting MAC settings
+### Unset MAC settings
 
 The CLI can also be used to unset MAC settings (so that the default ones are used):
 
 ```bash
-$ ttn-lw-cli end-devices update "app-id" "device-id" --unset mac-settings.rx1-delay
+$ ttn-lw-cli end-devices update <app-id> <device-id> --unset mac-settings.rx1-delay
 ```
