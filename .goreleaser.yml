@@ -157,6 +157,12 @@ brews:
           :TTN_LW_HTTP_STATIC_SEARCH_PATH => libexec/"public"
       }
       (bin/"ttn-lw-stack").write_env_script libexec/"ttn-lw-stack", env
+      bash_completion.install "config/completion/ttn-lw-stack.bash"
+      zsh_completion.install "config/completion/ttn-lw-stack.zsh"
+      fish_completion.install "config/completion/ttn-lw-stack.fish"
+      bash_completion.install "config/completion/ttn-lw-cli.bash"
+      zsh_completion.install "config/completion/ttn-lw-cli.zsh"
+      fish_completion.install "config/completion/ttn-lw-cli.fish"
 
   - name: ttn-lw-cli
     ids:
@@ -174,6 +180,9 @@ brews:
     skip_upload: auto
     install: |
       bin.install "ttn-lw-cli"
+      bash_completion.install "config/completion/ttn-lw-cli.bash"
+      zsh_completion.install "config/completion/ttn-lw-cli.zsh"
+      fish_completion.install "config/completion/ttn-lw-cli.fish"
 
 blobs:
   - provider: s3
