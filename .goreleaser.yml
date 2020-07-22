@@ -129,9 +129,11 @@ snapcrafts:
       ttn-lw-stack:
         plugs: [ home, network, network-bind ]
         command: ttn-lw-stack.wrapper
+        completer: config/completion/ttn-lw-stack.bash
       ttn-lw-cli:
         plugs: [ home, network, network-bind ]
         command: ttn-lw-cli.wrapper
+        completer: config/completion/ttn-lw-cli.snap.bash
 
 brews:
   - name: ttn-lw-stack
