@@ -13,7 +13,7 @@ This section provides guidelines for configuring MAC settings for end devices fr
 
 `mac-settings` on {{% tts %}} are configurable per end device. To configure persistent MAC settings, make changes to `mac-settings.desired_<parameter>`. Updates to `mac-settings.desired_<parameter>` take effect on device creation, after OTAA join or ABP FCnt reset, ResetInd, or after MAC state reset.
 
-`mac-state` can be used to test MAC settings immediately. To update settings during the current session, make changes to the `mac-state.desired_parameters.<parameter>`. Updates to the `mac-state.desired_parameters.<parameter>` are lost on reset.
+`mac-state` can be used to test MAC settings in the current session. To update settings for testing in the current session, make changes to the `mac-state.desired_parameters.<parameter>`. Updates to the `mac-state.desired_parameters.<parameter>` are applied on the next uplink, and lost on reset.
 
 The expected procedure for testing and updating settings is:
 
@@ -38,9 +38,11 @@ You can also refer to the [End Device API Reference page]({{< ref "reference/api
 Settings that are useful based on device class are:
 
 All devices:
+
 - `mac-settings.factory-preset-frequencies`
 
 Class A:
+
 - `mac-settings.desired-rx1-delay`
 - `mac-settings.desired-rx1-data-rate-offset`
 - `mac-settings.desired-rx2-data-rate-index`
@@ -49,15 +51,18 @@ Class A:
 - `mac-settings.use-adr`
 
 Class A ABP:
+
 - `mac-settings.resets-f-cnt`
 
 Class B:
+
 - `mac-settings.class-b-timeout`
 - `mac-settings.ping-slot-periodicity`
 - `mac-settings.desired-ping-slot-data-rate-index`
 - `mac-settings.desired-ping-slot-frequency`
 
 Class C:
+
 - `mac-settings.class-c-timeout`
 
 Some additional examples are included below. All settings are available at the [End Device API Reference page]({{< ref "reference/api/end_device#message:MACSettings" >}}) and can be viewed using the `ttn-lw-cli end-devices update --help` command.
